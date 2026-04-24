@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="en" data-scroll="0">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Click Raft — Web Design for Small Businesses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400;1,9..40,500&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ── RESET ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    ::-webkit-scrollbar { width: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── TOKENS (exact from outcrowd CSS) ──────────────── */
+    :root {
+      --bg:        #080808;
+      --bg-card:   #101010;
+      --bg-case:   #131111;
+      --bg-nav:    #191919;
+      --border:    #262626;
+      --border-w:  rgba(255,255,255,0.1);
+      --text:      #ffffff;
+      --muted:     #9c9c9c;
+      --dim:       #737373;
+      --orange:    #fe4a23;
+      --orange-h:  #e53b14;
+      --violet:    #774dff;
+      --green:     #a5de7b;
+      --blue:      #1b76ff;
+      --r-card:    1.88rem;
+      --r-nav:     0.833rem;
+      --r-btn:     0.56rem;
+      --r-pill:    2.4rem;
+      --max-w:     90rem;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    .nav-outer {
+      position: fixed;
+      top: 1.11rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-new {
+      background-color: var(--bg-nav);
+      border-radius: var(--r-nav);
+      width: 41rem;
+      height: 3.47rem;
+      padding: 0.28rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0;
+      transition: width 0.7s ease, background-color 0.3s ease;
+      overflow: hidden;
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      flex-shrink: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo .dot { color: var(--orange); }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      list-style: none;
+      overflow: hidden;
+      width: 20rem;
+      transition: width 0.7s ease, transform 0.7s ease, opacity 0.7s ease;
+    }
+
+    .nav-menu a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 0.85rem;
+      border-radius: calc(var(--r-nav) - 0.1rem);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .nav-menu a:hover { color: var(--text); }
+
+    .header-btn-wrap {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: flex-end;
+      width: 7rem;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: width 0.7s ease;
+    }
+
+    /* Book a call — ghost, hidden at top, appears on scroll-down */
+    .btn-book {
+      color: var(--muted);
+      background: var(--bg-nav);
+      border: none;
+      border-radius: var(--r-btn);
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      padding: 0.65rem 1.1rem;
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.7s ease, transform 0.7s ease, background-color 0.3s;
+      flex-shrink: 0;
+    }
+
+    /* Contact — orange CTA, always visible */
+    .btn-contact {
+      background-color: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-btn);
+      font-size: 0.875rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      padding: 0.7rem 1.25rem;
+      cursor: pointer;
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    /* ── EXPLODE hover effect (confirmed from outcrowd source) ── */
+    .explode {
+      pointer-events: none;
+      background-color: var(--violet);
+      border-radius: 50%;
+      width: 0.5vw;
+      height: 0.5vw;
+      position: absolute;
+      transform: scale(0.1);
+      transition: opacity 10ms, transform 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+      z-index: 0;
+    }
+
+    .btn-book .explode  { background-color: var(--violet); }
+    .btn-contact .explode { background-color: rgba(0,0,0,0.18); }
+
+    .btn-text { position: relative; z-index: 1; transition: color 0.2s; }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10rem 2rem 8rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(130px);
+      pointer-events: none;
+    }
+
+    .hbg-1 { width: 55vw; height: 55vw; top: -15vw; left: -15vw;
+      background: rgba(27,118,255,0.06); }
+    .hbg-2 { width: 45vw; height: 45vw; bottom: -10vw; right: -10vw;
+      background: rgba(254,74,35,0.05); }
+    .hbg-3 { width: 35vw; height: 35vw; top: 40%; left: 50%;
+      transform: translate(-50%,-50%);
+      background: rgba(119,77,255,0.04); }
+
+    .hero-center {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 56rem;
+    }
+
+    /* Tag pill — matches outcrowd's hero-tag style */
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      background: radial-gradient(185.4% 106.06% at 66.51% 82.61%, #131111 0%, #262222 100%);
+      border-radius: var(--r-pill);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 0.5rem 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-tag span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* Hero heading — 4.44rem matches outcrowd's .heading-hero */
+    .hero-h1 {
+      font-size: clamp(2.8rem, 6.5vw, 4.44rem);
+      font-weight: 500;
+      letter-spacing: -0.04rem;
+      line-height: 1.05;
+      color: var(--text);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-h1 .muted { color: var(--muted); }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 38rem;
+      margin: 0 auto 2.8rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-lg {
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      padding: 0.9rem 2rem;
+      border-radius: var(--r-btn);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn-lg:hover { transform: translateY(-1px); }
+
+    .btn-lg.filled {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .btn-lg.filled .explode { background: rgba(0,0,0,0.2); }
+
+    .btn-lg.ghost {
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-lg.ghost .explode { background: rgba(255,255,255,0.08); }
+
+    /* Floating decoration cards */
+    .hero-floats {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .fc {
+      position: absolute;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      box-shadow: 0 24px 72px rgba(0,0,0,0.65);
+    }
+
+    /* top-left — stat card */
+    .fc-1 {
+      top: 50%;
+      transform: translateY(-185%);
+      left: 9%;
+      width: 15rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .fc-1 .fc-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.55rem; }
+    .fc-1 .fc-big { font-size: 2.8rem; font-weight: 700; line-height: 1; letter-spacing: -0.04em; }
+    .fc-1 .fc-pill {
+      margin-top: 0.75rem;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(165,222,123,0.1); color: var(--green);
+      font-size: 0.8rem; font-weight: 600;
+      padding: 5px 11px; border-radius: 100px;
+    }
+
+    /* top-right — bar chart */
+    .fc-2 {
+      top: 50%;
+      transform: translateY(-185%);
+      right: 9%;
+      width: 14rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .fc-2 .fc-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .bars { display: flex; align-items: flex-end; gap: 6px; height: 68px; width: 100%; }
+    .bar { flex: 1; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.1); }
+    .bar.hi { background: var(--orange); }
+
+    /* bottom-left — browser mockup */
+    .fc-3 {
+      top: 50%;
+      transform: translateY(60%);
+      left: 7%;
+      width: 16rem;
+    }
+    .fc-3-bar { display: flex; gap: 6px; margin-bottom: 0.85rem; align-items: center; }
+    .dot-r { width: 9px; height: 9px; border-radius: 50%; }
+    .dot-r.r { background: #ff5f57; }
+    .dot-r.y { background: #febc2e; }
+    .dot-r.g { background: #28c840; }
+    .fc-line { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.09); margin-bottom: 7px; }
+    .fc-line.acc { background: rgba(254,74,35,0.45); width: 55%; }
+    .fc-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 12px; }
+    .fc-mini-box { height: 26px; border-radius: 6px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); }
+
+    /* bottom-right — metric card */
+    .fc-4 {
+      top: 50%;
+      transform: translateY(55%);
+      right: 8%;
+      width: 14rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .fc-4 .fc-icon {
+      width: 46px; height: 46px; border-radius: 13px;
+      background: rgba(27,118,255,0.12);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.8rem;
+    }
+    .fc-4 .fc-icon svg { width: 22px; height: 22px; color: var(--blue); }
+    .fc-4 .fc-big { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+    .fc-4 .fc-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; }
+
+    /* ── MARQUEE ──────────────────────────────────────── */
+    .marquee-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 30s linear infinite;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 2.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .m-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SHARED ───────────────────────────────────────── */
+    .section { padding: 7rem 2rem; }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .s-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .s-tag::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      display: block;
+    }
+
+    .s-h {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .s-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── STATEMENT (the big centered "We prove, design…" section) ── */
+    #statement {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 8rem 2rem;
+    }
+
+    .statement-inner {
+      max-width: 72rem;
+      margin: 0 auto;
+    }
+
+    .statement-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: 2.5rem;
+    }
+
+    .statement-tag .sdot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); }
+
+    .statement-h {
+      font-size: clamp(1.8rem, 3.8vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 4rem;
+    }
+
+    .statement-h .dim { color: var(--muted); }
+
+    .statement-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .statement-col strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .statement-col p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
+
+    /* ── STATS (hero-cards style from outcrowd) ─────────── */
+    #stats {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 7rem 2rem;
+    }
+
+    .stats-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Card grid with radial glow (matches outcrowd .stats-card-wrapper) */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid var(--border-w);
+      border-radius: var(--r-card);
+      overflow: hidden;
+    }
+
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border-w);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Radial glow — matches outcrowd .stats-card-gradient */
+    .stat-card::before {
+      content: '';
+      background-image: radial-gradient(circle, rgba(255,255,255,0.28), var(--bg) 58%);
+      border-radius: 50%;
+      width: 140%;
+      aspect-ratio: 1;
+      position: absolute;
+      top: -70%;
+      left: -20%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stat-card > * { position: relative; z-index: 1; }
+
+    .stat-big {
+      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .stat-big .acc { color: var(--orange); }
+
+    .stat-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; max-width: 18rem; }
+
+    /* ── SERVICES / BENTO ───────────────────────────────── */
+    #services {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 7rem 2rem;
+    }
+
+    .services-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    /* Service card grid — mouse glow effect */
+    #cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r-card);
+      overflow: hidden;
+    }
+
+    .service-card {
+      background-color: var(--bg-card);
+      padding: 3.5rem;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    /* Mouse glow — confirmed from outcrowd source */
+    .service-card::before, .service-card::after {
+      content: "";
+      height: 100%; left: 0; top: 0;
+      width: 100%; position: absolute;
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 500ms;
+      pointer-events: none;
+    }
+
+    .service-card:hover::before { opacity: 1; }
+    #cards:hover > .service-card::after { opacity: 1; }
+
+    .service-card::before {
+      background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y),
+        rgba(255,255,255,0.06), transparent 20%);
+      z-index: 3;
+    }
+
+    .service-card::after {
+      background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+        rgba(255,255,255,0.08), transparent 20%);
+      z-index: 1;
+    }
+
+    .service-card h3 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+      position: relative; z-index: 2;
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 28rem;
+      position: relative; z-index: 2;
+    }
+
+    .sc-visual {
+      margin-top: 2.2rem;
+      border-radius: 0.75rem;
+      overflow: hidden;
+      position: relative; z-index: 2;
+    }
+
+    /* Design card visual */
+    .scv-design {
+      height: 90px;
+      background: rgba(119,77,255,0.07);
+      border: 1px solid rgba(119,77,255,0.12);
+      border-radius: 0.75rem;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+
+    .swatch {
+      width: 34px; height: 34px; border-radius: 9px;
+    }
+
+    /* Code visual */
+    .scv-code {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.72rem;
+      line-height: 1.9;
+    }
+
+    .ck { color: var(--violet); }
+    .cv { color: var(--green); }
+    .ct { color: var(--blue); }
+    .cc { color: rgba(255,255,255,0.25); }
+
+    /* SEO bars visual */
+    .scv-seo {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.9rem 1rem;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .seo-row { display: flex; align-items: center; gap: 8px; }
+    .seo-lbl { font-size: 0.65rem; color: var(--muted); width: 32px; }
+    .seo-track { flex: 1; height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; }
+    .seo-fill { height: 100%; border-radius: 2px; background: var(--green); }
+    .seo-score { font-size: 0.65rem; color: var(--green); font-weight: 700; width: 26px; text-align: right; }
+
+    /* CMS visual */
+    .scv-cms {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.85rem 1rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .cms-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: rgba(254,74,35,0.12); border: 1px solid rgba(254,74,35,0.18);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    .cms-icon svg { width: 18px; height: 18px; color: var(--orange); }
+    .cms-info strong { display: block; font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .cms-info span { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── WORK ─────────────────────────────────────────── */
+    #work {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 7rem 2rem;
+    }
+
+    .work-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 3.5rem;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--r-card);
+      overflow: hidden;
+    }
+
+    .case-card {
+      background: var(--bg-case);
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    .case-card:hover { background: #171513; }
+    .case-card.span2 { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
+
+    .case-thumb {
+      height: 240px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .case-card.span2 .case-thumb { height: 100%; min-height: 280px; }
+
+    /* dark tinted thumbnail with inner glow */
+    .ct-rose   { background: #140a0c; }
+    .ct-forest { background: #0a140b; }
+    .ct-amber  { background: #14100a; }
+    .ct-ocean  { background: #0a0c14; }
+
+    .ct-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    .ct-rose   .ct-glow { background: rgba(255,80,60,0.22);   width: 60%; height: 60%; top: 15%; left: 20%; }
+    .ct-forest .ct-glow { background: rgba(80,200,100,0.18);  width: 60%; height: 60%; top: 20%; left: 25%; }
+    .ct-amber  .ct-glow { background: rgba(255,180,50,0.18);  width: 60%; height: 60%; top: 15%; left: 20%; }
+    .ct-ocean  .ct-glow { background: rgba(91,143,255,0.18);  width: 60%; height: 60%; top: 20%; left: 20%; }
+
+    .ct-mockup {
+      position: absolute;
+      inset: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 0.75rem;
+      padding: 14px;
+    }
+
+    .ctm-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,0.18); margin-bottom: 6px; }
+    .ctm-bar.s { width: 45%; }
+    .ctm-bar.m { width: 65%; }
+    .ctm-bar.f { width: 90%; }
+    .ctm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 12px; }
+    .ctm-box { height: 32px; border-radius: 5px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); }
+
+    .case-body { padding: 2rem 2.2rem 2.2rem; }
+    .case-card.span2 .case-body { padding: 2.5rem 2.5rem 2.5rem; display: flex; flex-direction: column; justify-content: flex-end; }
+
+    .case-type {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 0.5rem;
+    }
+
+    .case-body h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .case-body p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+
+    .result-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(165,222,123,0.08);
+      border: 1px solid rgba(165,222,123,0.14);
+      color: var(--green);
+      font-size: 0.73rem; font-weight: 600;
+      padding: 4px 10px; border-radius: 100px;
+      margin-bottom: 0.85rem;
+    }
+
+    .result-pill svg { width: 10px; height: 10px; }
+
+    .case-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--dim); text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .case-link:hover { color: var(--text); }
+    .case-link svg { width: 13px; height: 13px; transition: transform 0.2s; }
+    .case-link:hover svg { transform: translateX(3px); }
+
+    /* ── PROCESS ─────────────────────────────────────── */
+    #process {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 7rem 2rem;
+    }
+
+    .process-intro { max-width: 44rem; margin-bottom: 4rem; }
+
+    .process-list { display: flex; flex-direction: column; }
+
+    .p-item {
+      display: grid;
+      grid-template-columns: 4rem 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      align-items: start;
+      transition: padding-left 0.2s;
+    }
+
+    .p-item:last-child { border-bottom: 1px solid var(--border); }
+    .p-item:hover { padding-left: 0.5rem; }
+
+    .p-num { font-size: 0.8rem; font-weight: 500; color: var(--muted); padding-top: 4px; }
+
+    .p-content h3 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .p-content p { font-size: 0.9rem; color: var(--muted); line-height: 1.75; max-width: 44rem; }
+
+    /* ── CTA ─────────────────────────────────────────── */
+    #cta {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 9rem 2rem 8rem;
+    }
+
+    .cta-inner { max-width: 80rem; margin: 0 auto; }
+
+    .cta-split {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 3rem;
+      margin-bottom: 5rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-h {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 22rem;
+    }
+
+    .cta-h .dim { color: var(--muted); }
+
+    .cta-right { max-width: 28rem; }
+
+    .cta-right p { font-size: 0.95rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; }
+
+    .cta-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .cta-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--r-btn);
+      padding: 0.8rem 1.2rem;
+      font-size: 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .cta-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--r-btn);
+      padding: 0.8rem 1.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+      min-height: 7rem;
+    }
+
+    .cta-input::placeholder, .cta-textarea::placeholder { color: var(--muted); }
+    .cta-input:focus, .cta-textarea:focus { border-color: rgba(255,255,255,0.25); }
+
+    .cta-error {
+      font-size: 0.82rem;
+      color: #ff6b6b;
+      margin-top: -0.25rem;
+    }
+
+    .cta-success {
+      font-size: 0.9rem;
+      color: var(--green);
+      padding: 1rem 0;
+    }
+
+    .cta-divider { height: 1px; background: var(--border); margin-bottom: 2rem; }
+
+    .cta-note { font-size: 0.8rem; color: var(--muted); }
+    .cta-note a { color: var(--dim); text-decoration: none; }
+    .cta-note a:hover { color: var(--text); }
+
+    /* ── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .f-logo {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .f-logo .dot { color: var(--orange); }
+
+    .f-links { display: flex; gap: 1.75rem; list-style: none; }
+
+    .f-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .f-links a:hover { color: var(--text); }
+
+    footer p { font-size: 0.83rem; color: var(--muted); }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav-menu { display: none; }
+      .nav-new { width: auto !important; }
+      .statement-cols { grid-template-columns: 1fr; gap: 2rem; }
+      .stats-row { grid-template-columns: 1fr; }
+      #cards { grid-template-columns: 1fr; }
+      .work-grid { grid-template-columns: 1fr; }
+      .case-card.span2 { grid-column: span 1; grid-template-columns: 1fr; }
+      .case-card.span2 .case-thumb { height: 220px; }
+      .cta-split { flex-direction: column; align-items: flex-start; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .f-links { justify-content: center; }
+    }
+
+    @media (max-width: 640px) {
+      #hero { padding: 8rem 1.25rem 6rem; }
+      .hero-floats { display: none; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .cta-form { flex-direction: column; }
+      .services-header { flex-direction: column; }
+      .work-header { flex-direction: column; align-items: flex-start; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ─────────────────────────────────────────── -->
+  <div class="nav-outer" role="navigation" aria-label="Main navigation">
+    <nav class="nav-new" id="nav">
+      <a href="#hero" class="nav-logo">Click<span class="dot">.</span>Raft</a>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#statement">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#process">Process</a></li>
+      </ul>
+
+      <div class="header-btn-wrap" id="btnWrap">
+        <button class="btn-book" id="btnBook" aria-label="Book a call">
+          <span class="btn-text">Book a call</span>
+          <div class="explode"></div>
+        </button>
+        <a href="#cta" class="btn-contact" id="btnContact">
+          <span class="btn-text">Contact</span>
+          <div class="explode"></div>
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section id="hero" section-color="black">
+    <div class="hero-bg-glow hbg-1" aria-hidden="true"></div>
+    <div class="hero-bg-glow hbg-2" aria-hidden="true"></div>
+    <div class="hero-bg-glow hbg-3" aria-hidden="true"></div>
+
+    <!-- floating UI cards (decoration, hidden on mobile) -->
+    <div class="hero-floats" aria-hidden="true">
+      <div class="fc fc-1">
+        <div class="fc-label">Sites Launched</div>
+        <div class="fc-big">40+</div>
+        <div class="fc-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="9" height="9">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+            <polyline points="17 6 23 6 23 12"/>
+          </svg>
+          100% satisfied
+        </div>
+      </div>
+
+      <div class="fc fc-2">
+        <div class="fc-label">Monthly visits</div>
+        <div class="bars">
+          <div class="bar" style="height:35%"></div>
+          <div class="bar" style="height:52%"></div>
+          <div class="bar" style="height:44%"></div>
+          <div class="bar hi" style="height:78%"></div>
+          <div class="bar" style="height:62%"></div>
+          <div class="bar hi" style="height:100%"></div>
+        </div>
+      </div>
+
+      <div class="fc fc-3">
+        <div class="fc-3-bar">
+          <div class="dot-r r"></div>
+          <div class="dot-r y"></div>
+          <div class="dot-r g"></div>
+        </div>
+        <div class="fc-line acc"></div>
+        <div class="fc-line" style="width:80%"></div>
+        <div class="fc-line" style="width:60%"></div>
+        <div class="fc-line" style="width:45%"></div>
+        <div class="fc-mini">
+          <div class="fc-mini-box"></div>
+          <div class="fc-mini-box"></div>
+          <div class="fc-mini-box"></div>
+          <div class="fc-mini-box"></div>
+        </div>
+      </div>
+
+      <div class="fc fc-4">
+        <div class="fc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="fc-big">+58%</div>
+        <div class="fc-label">Avg. conversion lift</div>
+      </div>
+    </div>
+
+    <div class="hero-center">
+      <div class="hero-tag">
+        <span>Web design for small businesses</span>
+      </div>
+
+      <h1 class="hero-h1" id="hero-headline">
+        Websites that win<br>
+        <span class="muted">customers for you</span>
+      </h1>
+
+      <p class="hero-sub">
+        We build fast, high-converting websites for small business owners who are tired of losing clients to competitors with a better online presence.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#cta" class="btn-lg filled">
+          <span class="btn-text">Book a free call</span>
+          <div class="explode"></div>
+        </a>
+        <a href="#work" class="btn-lg ghost">
+          <span class="btn-text">See our work</span>
+          <div class="explode"></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MARQUEE ─────────────────────────────────────── -->
+  <div class="marquee-strip" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="m-dot"></span>Web Design</span>
+      <span class="marquee-item"><span class="m-dot"></span>Brand Identity</span>
+      <span class="marquee-item"><span class="m-dot"></span>SEO Optimization</span>
+      <span class="marquee-item"><span class="m-dot"></span>Landing Pages</span>
+      <span class="marquee-item"><span class="m-dot"></span>Mobile-First Development</span>
+      <span class="marquee-item"><span class="m-dot"></span>Conversion Rate Optimization</span>
+      <span class="marquee-item"><span class="m-dot"></span>E-Commerce Stores</span>
+      <span class="marquee-item"><span class="m-dot"></span>Booking Integrations</span>
+      <span class="marquee-item"><span class="m-dot"></span>Web Design</span>
+      <span class="marquee-item"><span class="m-dot"></span>Brand Identity</span>
+      <span class="marquee-item"><span class="m-dot"></span>SEO Optimization</span>
+      <span class="marquee-item"><span class="m-dot"></span>Landing Pages</span>
+      <span class="marquee-item"><span class="m-dot"></span>Mobile-First Development</span>
+      <span class="marquee-item"><span class="m-dot"></span>Conversion Rate Optimization</span>
+      <span class="marquee-item"><span class="m-dot"></span>E-Commerce Stores</span>
+      <span class="marquee-item"><span class="m-dot"></span>Booking Integrations</span>
+    </div>
+  </div>
+
+  <!-- ── STATEMENT ──────────────────────────────────── -->
+  <section id="statement" section-color="black">
+    <div class="container">
+      <div class="statement-inner">
+        <div class="statement-tag">
+          <span class="sdot"></span>
+          About Click Raft
+        </div>
+        <h2 class="statement-h">
+          We design, build, and launch websites<br>
+          <span class="dim">that drive real business growth</span><br>
+          with clarity at its core
+        </h2>
+        <div class="statement-cols">
+          <div class="statement-col">
+            <strong>Built for owners, not agencies</strong>
+            <p>Click Raft was built on one belief: small business owners deserve world-class websites without the enterprise price tag. You work directly with Spencer — no account managers, no hand-offs, no bloat.</p>
+          </div>
+          <div class="statement-col">
+            <strong>Conversion is the north star</strong>
+            <p>Every layout decision, copy placement, and button is made with one goal: turning visitors into paying customers. We don't just design beautiful sites. We design sites that perform.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ──────────────────────────────────────── -->
+  <section id="stats" section-color="black">
+    <div class="container">
+      <div class="stats-label-row">
+        <div class="s-tag">Business-driven design</div>
+      </div>
+      <div class="stats-row" role="list">
+        <div class="stat-card" role="listitem">
+          <div class="stat-big">40<span class="acc">+</span></div>
+          <p>Sites launched for small businesses across the United States</p>
+        </div>
+        <div class="stat-card" role="listitem">
+          <div class="stat-big">7<span class="acc">d</span></div>
+          <p>Average time from kickoff call to a live, fully functional website</p>
+        </div>
+        <div class="stat-card" role="listitem">
+          <div class="stat-big">100<span class="acc">%</span></div>
+          <p>Client satisfaction rate — we don't stop until you love it</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ───────────────────────────────────── -->
+  <section id="services" section-color="black">
+    <div class="container">
+      <div class="services-header">
+        <div>
+          <div class="s-tag">What we do</div>
+          <h2 class="s-h">Everything your<br>online presence needs</h2>
+        </div>
+        <p class="s-sub" style="max-width:28rem;align-self:flex-end;">From the first pixel to post-launch SEO — we handle it all so you can focus on running your business.</p>
+      </div>
+
+      <div id="cards" role="list">
+
+        <div class="service-card" role="listitem">
+          <h3>Web Design</h3>
+          <p>Custom-designed websites built to convert visitors into clients — not just look great in a portfolio screenshot.</p>
+          <div class="sc-visual">
+            <div class="scv-design" aria-hidden="true">
+              <div class="swatch" style="background:linear-gradient(135deg,#fe4a23,#ff8a6a)"></div>
+              <div class="swatch" style="background:linear-gradient(135deg,#774dff,#9b7fff)"></div>
+              <div class="swatch" style="background:linear-gradient(135deg,#a5de7b,#5bcca0)"></div>
+              <div class="swatch" style="background:linear-gradient(135deg,#191919,#101010)"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card" role="listitem">
+          <h3>Development</h3>
+          <p>Clean, fast code that scores high on Google PageSpeed. Every site is mobile-first, accessible, and built to last.</p>
+          <div class="sc-visual">
+            <div class="scv-code" aria-hidden="true">
+              <span class="cc">&lt;</span><span class="ct">section</span> <span class="ck">class</span>=<span class="cv">"hero"</span><span class="cc">&gt;</span><br>
+              &nbsp;&nbsp;<span class="cc">&lt;</span><span class="ct">h1</span><span class="cc">&gt;</span><span class="ck">Your Business</span><span class="cc">&lt;/h1&gt;</span><br>
+              &nbsp;&nbsp;<span class="cc">&lt;</span><span class="ct">p</span><span class="cc">&gt;</span><span class="cv">Trusted by clients</span><span class="cc">&lt;/p&gt;</span><br>
+              <span class="cc">&lt;/</span><span class="ct">section</span><span class="cc">&gt;</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card" role="listitem">
+          <h3>SEO &amp; Performance</h3>
+          <p>On-page SEO, meta tags, sitemap, structured data, and Core Web Vitals — all handled at launch, not as an afterthought.</p>
+          <div class="sc-visual">
+            <div class="scv-seo" aria-hidden="true">
+              <div class="seo-row">
+                <span class="seo-lbl">Speed</span>
+                <div class="seo-track"><div class="seo-fill" style="width:95%"></div></div>
+                <span class="seo-score">95</span>
+              </div>
+              <div class="seo-row">
+                <span class="seo-lbl">SEO</span>
+                <div class="seo-track"><div class="seo-fill" style="width:100%"></div></div>
+                <span class="seo-score">100</span>
+              </div>
+              <div class="seo-row">
+                <span class="seo-lbl">A11y</span>
+                <div class="seo-track"><div class="seo-fill" style="width:90%"></div></div>
+                <span class="seo-score">90</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="service-card" role="listitem">
+          <h3>Easy to Manage</h3>
+          <p>We set up a simple CMS so you can update text, images, and pricing without touching a line of code — ever.</p>
+          <div class="sc-visual">
+            <div class="scv-cms" aria-hidden="true">
+              <div class="cms-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </div>
+              <div class="cms-info">
+                <strong>Edit anything</strong>
+                <span>No developer needed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WORK ───────────────────────────────────────── -->
+  <section id="work" section-color="black">
+    <div class="container">
+      <div class="work-header">
+        <div>
+          <div class="s-tag">Selected work</div>
+          <h2 class="s-h">Sites we're proud of</h2>
+        </div>
+        <a href="#cta" class="btn-lg ghost" style="flex-shrink:0;">
+          <span class="btn-text">Start a project</span>
+          <div class="explode"></div>
+        </a>
+      </div>
+
+      <div class="work-grid" role="list">
+
+        <!-- Featured large card -->
+        <article class="case-card span2" role="listitem" tabindex="0" aria-label="Bloom Aesthetics project">
+          <div class="case-thumb ct-rose">
+            <div class="ct-glow"></div>
+            <div class="ct-mockup">
+              <div class="ctm-bar f"></div>
+              <div class="ctm-bar m"></div>
+              <div class="ctm-bar s"></div>
+              <div class="ctm-grid">
+                <div class="ctm-box"></div>
+                <div class="ctm-box"></div>
+                <div class="ctm-box"></div>
+                <div class="ctm-box"></div>
+              </div>
+            </div>
+          </div>
+          <div class="case-body">
+            <div class="result-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                <polyline points="17 6 23 6 23 12"/>
+              </svg>
+              +38% bookings in 60 days
+            </div>
+            <div class="case-type">Med Spa · Dallas, TX</div>
+            <h3>Bloom Aesthetics</h3>
+            <p>Full redesign with online booking, a before/after gallery, and service pages optimized to convert first-time visitors into booked appointments.</p>
+            <a href="#cta" class="case-link">
+              Case study
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="case-card" role="listitem" tabindex="0" aria-label="Peak Fitness project">
+          <div class="case-thumb ct-forest">
+            <div class="ct-glow"></div>
+            <div class="ct-mockup">
+              <div class="ctm-bar f"></div>
+              <div class="ctm-bar m"></div>
+            </div>
+          </div>
+          <div class="case-body">
+            <div class="result-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                <polyline points="17 6 23 6 23 12"/>
+              </svg>
+              +52 new members
+            </div>
+            <div class="case-type">Fitness Studio · Austin, TX</div>
+            <h3>Peak Fitness Studio</h3>
+            <p>Landing page, class schedule, and online sign-up flow for a boutique gym with zero web presence.</p>
+            <a href="#cta" class="case-link">
+              Case study
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="case-card" role="listitem" tabindex="0" aria-label="Flicker Coffee project">
+          <div class="case-thumb ct-amber">
+            <div class="ct-glow"></div>
+            <div class="ct-mockup">
+              <div class="ctm-bar f"></div>
+              <div class="ctm-bar s"></div>
+            </div>
+          </div>
+          <div class="case-body">
+            <div class="result-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                <polyline points="17 6 23 6 23 12"/>
+              </svg>
+              +$4k/mo online revenue
+            </div>
+            <div class="case-type">Food &amp; Bev · Nashville, TN</div>
+            <h3>Flicker Coffee Co.</h3>
+            <p>Brand-forward site with menu, location pages, and an integrated online merch store — built in 9 days.</p>
+            <a href="#cta" class="case-link">
+              Case study
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROCESS ─────────────────────────────────────── -->
+  <section id="process" section-color="black">
+    <div class="container">
+      <div class="process-intro">
+        <div class="s-tag">How it works</div>
+        <h2 class="s-h">From brief to live<br>in four steps</h2>
+      </div>
+      <div class="process-list" role="list">
+        <div class="p-item" role="listitem">
+          <div class="p-num">01</div>
+          <div class="p-content">
+            <h3>Discovery call</h3>
+            <p>A free 20-minute conversation about your business, your goals, and what you want people to do when they land on your site.</p>
+          </div>
+        </div>
+        <div class="p-item" role="listitem">
+          <div class="p-num">02</div>
+          <div class="p-content">
+            <h3>Design mockup</h3>
+            <p>Within 3 business days you'll have a full visual mockup to review. We revise until you love it — no extra charges.</p>
+          </div>
+        </div>
+        <div class="p-item" role="listitem">
+          <div class="p-num">03</div>
+          <div class="p-content">
+            <h3>Build &amp; review</h3>
+            <p>We build for speed, mobile-first performance, and SEO. You get a private preview link before anything goes public.</p>
+          </div>
+        </div>
+        <div class="p-item" role="listitem">
+          <div class="p-num">04</div>
+          <div class="p-content">
+            <h3>Launch &amp; support</h3>
+            <p>We handle domain, hosting, and go live together. Every project includes 30 days of post-launch support — included.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ─────────────────────────────────────────── -->
+  <section id="cta" section-color="black">
+    <div class="cta-inner">
+      <div class="cta-split">
+        <h2 class="cta-h">
+          Ready to get<br>
+          <span class="dim">your site live?</span>
+        </h2>
+        <div class="cta-right">
+          <p>Fill out the form and we'll be in touch within 24 hours to schedule a free discovery call. No contracts, no pitch decks.</p>
+          <form id="contact-form" class="cta-form" aria-label="Contact form" novalidate>
+            <label for="cta-name" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Your name</label>
+            <input type="text" id="cta-name" class="cta-input" placeholder="Your name" autocomplete="name" />
+            <label for="cta-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Email address</label>
+            <input type="email" id="cta-email" class="cta-input" placeholder="your@email.com" autocomplete="email" />
+            <label for="cta-message" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Message</label>
+            <textarea id="cta-message" class="cta-textarea" placeholder="Tell us about your project…"></textarea>
+            <div id="form-error" class="cta-error" role="alert" aria-live="polite"></div>
+            <div id="form-success" class="cta-success" role="status" aria-live="polite" style="display:none">Your message was sent! We'll be in touch within 24 hours.</div>
+            <button type="submit" id="form-btn" class="btn-lg filled" style="align-self:flex-start;">
+              <span class="btn-text">Get started</span>
+              <div class="explode"></div>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="cta-divider"></div>
+      <p class="cta-note">No spam. Or reach directly: <a href="mailto:spencerjunlee@gmail.com">spencerjunlee@gmail.com</a></p>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────── -->
+  <footer section-color="black">
+    <div class="footer-inner">
+      <a href="#hero" class="f-logo">Click<span class="dot">.</span>Raft</a>
+      <p>&copy; 2026 Click Raft. All rights reserved.</p>
+      <ul class="f-links" aria-label="Footer navigation">
+        <li><a href="#statement">About</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#cta">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    /* ── NAV SCROLL SHRINK/EXPAND (confirmed from outcrowd JS) ── */
+    const nav     = document.getElementById('nav');
+    const navMenu = document.getElementById('navMenu');
+    const btnWrap = document.getElementById('btnWrap');
+    const btnBook = document.getElementById('btnBook');
+    let lastST = 0;
+
+    window.addEventListener('scroll', () => {
+      const st = window.pageYOffset;
+      if (window.innerWidth <= 900) { lastST = st; return; }
+
+      if (st > lastST && st > 60) {
+        // scroll DOWN → compact
+        nav.style.width = '24rem';
+        navMenu.style.width = '0rem';
+        navMenu.style.opacity = '0';
+        navMenu.style.transform = 'scale(0.6)';
+        btnWrap.style.width = '16rem';
+        btnBook.style.opacity = '1';
+        btnBook.style.transform = 'scale(1)';
+      } else {
+        // scroll UP → expanded
+        nav.style.width = '41rem';
+        navMenu.style.width = '20rem';
+        navMenu.style.opacity = '1';
+        navMenu.style.transform = 'scale(1)';
+        btnWrap.style.width = '7rem';
+        btnBook.style.opacity = '0';
+        btnBook.style.transform = 'scale(0.6)';
+      }
+      lastST = st <= 0 ? 0 : st;
+    }, { passive: true });
+
+    /* ── SECTION COLOR — nav bg switching ── */
+    const sections = document.querySelectorAll('[section-color]');
+    function updateNavColor() {
+      const navRect = nav.getBoundingClientRect();
+      let color = 'black';
+      sections.forEach(s => {
+        const r = s.getBoundingClientRect();
+        if (navRect.top >= r.top && navRect.bottom <= r.bottom) {
+          color = s.getAttribute('section-color');
+        }
+      });
+      nav.style.backgroundColor = color === 'black' ? '#191919' : '#fafafa';
+    }
+    window.addEventListener('scroll', updateNavColor, { passive: true });
+    window.addEventListener('resize', updateNavColor);
+    updateNavColor();
+
+    /* ── EXPLODE hover effect (confirmed from outcrowd source) ── */
+    function initExplode(el) {
+      const explode = el.querySelector('.explode');
+      const txt     = el.querySelector('.btn-text');
+      if (!explode) return;
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        explode.style.left = `${e.clientX - r.left}px`;
+        explode.style.top  = `${e.clientY - r.top}px`;
+        explode.style.transform = 'scale(50)';
+        if (txt) txt.style.color = '#fff';
+      });
+      el.addEventListener('mouseleave', () => {
+        explode.style.transform = 'scale(0.1)';
+        if (txt) txt.style.color = '';
+      });
+    }
+
+    document.querySelectorAll('.btn-contact, .btn-book, .btn-lg, [class*="btn"]').forEach(initExplode);
+
+    /* ── SERVICE CARD mouse glow (confirmed from outcrowd source) ── */
+    const cardGrid = document.getElementById('cards');
+    if (cardGrid) {
+      cardGrid.addEventListener('mousemove', e => {
+        for (const card of cardGrid.getElementsByClassName('service-card')) {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - r.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - r.top}px`);
+        }
+      });
+    }
+
+    /* ── Active nav link on scroll ── */
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    window.addEventListener('scroll', () => {
+      let cur = '';
+      document.querySelectorAll('section[id]').forEach(s => {
+        if (window.scrollY >= s.offsetTop - 140) cur = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = (a.getAttribute('href') === '#' + cur) ? '#fff' : '';
+      });
+    }, { passive: true });
+
+    /* ── Contact form ── */
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name    = document.getElementById('cta-name').value;
+      const email   = document.getElementById('cta-email').value;
+      const message = document.getElementById('cta-message').value;
+      const errEl   = document.getElementById('form-error');
+      const okEl    = document.getElementById('form-success');
+      const btn     = document.getElementById('form-btn');
+      const txt     = btn.querySelector('.btn-text');
+
+      errEl.textContent = '';
+      okEl.style.display = 'none';
+
+      if (!name.trim())    { errEl.textContent = 'Name is required.'; return; }
+      if (!email.trim())   { errEl.textContent = 'Email is required.'; return; }
+      if (!message.trim()) { errEl.textContent = 'Message is required.'; return; }
+
+      btn.disabled = true;
+      txt.textContent = 'Sending…';
+
+      try {
+        const res  = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Something went wrong. Please try again.';
+          btn.disabled = false;
+          txt.textContent = 'Get started';
+          return;
+        }
+        okEl.style.display = 'block';
+        this.reset();
+      } catch {
+        errEl.textContent = 'Network error. Please try again or email spencer@click-raft.com directly.';
+      } finally {
+        btn.disabled = false;
+        txt.textContent = 'Get started';
+      }
+    });
+  </script>
+
+</body>
+</html>
