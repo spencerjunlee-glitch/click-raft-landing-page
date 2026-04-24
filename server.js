@@ -4,7 +4,12 @@ const path = require('path');
 const { Resend } = require('resend');
 
 const app = express();
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error('RESEND_API_KEY environment variable is not set');
+  return new Resend(key);
+}
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
@@ -27,7 +32,7 @@ app.post('/api/contact', async (req, res) => {
   }
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: 'Click Raft <noreply@updates.click-raft.com>',
       to: 'spencer@click-raft.com',
       replyTo: email.trim(),
