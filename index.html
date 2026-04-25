@@ -758,15 +758,19 @@
     }
 
     .case-card:hover { background: #171513; }
-    .case-card.span2 { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; }
-
     .case-thumb {
-      height: 240px;
+      height: 260px;
       position: relative;
       overflow: hidden;
     }
 
-    .case-card.span2 .case-thumb { height: 100%; min-height: 280px; }
+    .case-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
 
     /* dark tinted thumbnail with inner glow */
     .ct-rose   { background: #140a0c; }
@@ -1010,8 +1014,6 @@
       .stats-row { grid-template-columns: 1fr; }
       #cards { grid-template-columns: 1fr; }
       .work-grid { grid-template-columns: 1fr; }
-      .case-card.span2 { grid-column: span 1; grid-template-columns: 1fr; }
-      .case-card.span2 .case-thumb { height: 220px; }
       .cta-split { flex-direction: column; align-items: flex-start; }
       .footer-inner { flex-direction: column; text-align: center; }
       .f-links { justify-content: center; }
@@ -1317,21 +1319,9 @@
 
       <div class="work-grid" role="list">
 
-        <!-- Featured large card -->
-        <article class="case-card span2" role="listitem" tabindex="0" aria-label="Bloom Aesthetics project">
-          <div class="case-thumb ct-rose">
-            <div class="ct-glow"></div>
-            <div class="ct-mockup">
-              <div class="ctm-bar f"></div>
-              <div class="ctm-bar m"></div>
-              <div class="ctm-bar s"></div>
-              <div class="ctm-grid">
-                <div class="ctm-box"></div>
-                <div class="ctm-box"></div>
-                <div class="ctm-box"></div>
-                <div class="ctm-box"></div>
-              </div>
-            </div>
+        <article class="case-card" role="listitem" tabindex="0" aria-label="Profile Aesthetics project">
+          <div class="case-thumb">
+            <img src="/images/profile-aesthetics.png" alt="Profile Aesthetics website" loading="lazy" />
           </div>
           <div class="case-body">
             <div class="result-pill">
@@ -1339,27 +1329,16 @@
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
                 <polyline points="17 6 23 6 23 12"/>
               </svg>
-              +38% bookings in 60 days
+              +42% consultation bookings
             </div>
-            <div class="case-type">Med Spa · Dallas, TX</div>
-            <h3>Bloom Aesthetics</h3>
-            <p>Full redesign with online booking, a before/after gallery, and service pages optimized to convert first-time visitors into booked appointments.</p>
-            <a href="#cta" class="case-link">
-              Case study
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
+            <h3>Profile Aesthetics</h3>
+            <p>Luxury med spa redesign with online booking, a curated service menu, and a visual identity built to attract high-value clients.</p>
           </div>
         </article>
 
-        <article class="case-card" role="listitem" tabindex="0" aria-label="Peak Fitness project">
-          <div class="case-thumb ct-forest">
-            <div class="ct-glow"></div>
-            <div class="ct-mockup">
-              <div class="ctm-bar f"></div>
-              <div class="ctm-bar m"></div>
-            </div>
+        <article class="case-card" role="listitem" tabindex="0" aria-label="ALDA Aesthetics project">
+          <div class="case-thumb">
+            <img src="/images/alda-aesthetics.png" alt="ALDA Aesthetics website" loading="lazy" />
           </div>
           <div class="case-body">
             <div class="result-pill">
@@ -1367,25 +1346,16 @@
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
                 <polyline points="17 6 23 6 23 12"/>
               </svg>
-              +52 new members
+              +$8k/mo e-commerce revenue
             </div>
-            <div class="case-type">Fitness Studio · Austin, TX</div>
-            <h3>Peak Fitness Studio</h3>
-            <p>Landing page, class schedule, and online sign-up flow for a boutique gym with zero web presence.</p>
-            <a href="#cta" class="case-link">
-              Case study
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
+            <h3>ALDA Aesthetics</h3>
+            <p>Medical spa and skincare e-commerce brand — full website, online shop, and booking system built on a single platform.</p>
           </div>
         </article>
 
-        <article class="case-card" role="listitem" tabindex="0" aria-label="Flicker Coffee project">
-          <div class="case-thumb ct-amber">
-            <div class="ct-glow"></div>
-            <div class="ct-mockup">
-              <div class="ctm-bar f"></div>
-              <div class="ctm-bar s"></div>
-            </div>
+        <article class="case-card" role="listitem" tabindex="0" aria-label="Capital Center for Surgery project">
+          <div class="case-thumb">
+            <img src="/images/capital-center.png" alt="Capital Center for Surgery website" loading="lazy" />
           </div>
           <div class="case-body">
             <div class="result-pill">
@@ -1393,15 +1363,27 @@
                 <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
                 <polyline points="17 6 23 6 23 12"/>
               </svg>
-              +$4k/mo online revenue
+              +65% new patient inquiries
             </div>
-            <div class="case-type">Food &amp; Bev · Nashville, TN</div>
-            <h3>Flicker Coffee Co.</h3>
-            <p>Brand-forward site with menu, location pages, and an integrated online merch store — built in 9 days.</p>
-            <a href="#cta" class="case-link">
-              Case study
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
+            <h3>Capital Center for Surgery</h3>
+            <p>Multi-specialty surgical center site built to establish trust — showcasing accreditations, surgical services, and a seamless patient intake flow.</p>
+          </div>
+        </article>
+
+        <article class="case-card" role="listitem" tabindex="0" aria-label="Savalia Plastic Surgery project">
+          <div class="case-thumb">
+            <img src="/images/savalia-surgery.png" alt="Savalia Plastic Surgery website" loading="lazy" />
+          </div>
+          <div class="case-body">
+            <div class="result-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                <polyline points="17 6 23 6 23 12"/>
+              </svg>
+              +31% consultation requests
+            </div>
+            <h3>Savalia Plastic Surgery</h3>
+            <p>Premium aesthetic and reconstructive surgery practice in Newport Beach — cinematic design focused entirely on driving consultation bookings.</p>
           </div>
         </article>
 
